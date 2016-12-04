@@ -1,0 +1,38 @@
+<HTML>
+<head>
+  <title>Restaurant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+</head>
+<body>
+<header class="w3-container w3-teal">
+	<h1>Restaurants</h1>
+	<p>User : <%=session.userId %>
+	<p>Showing <%= c.length %> Restaurants
+	(criteria: <%if(cr != null){ %>
+				{<%= cr %>}
+				<%} else{ %>
+				{}
+				<%} %>
+				)</p>
+</header>
+
+<ol>
+  <% c.forEach(function(restaurant) { %>
+  <li><a href=/showdetails?id=<%= restaurant._id %>><%= restaurant.name %> </a></li>
+  <% });                        %>
+</ol>
+
+<!--Btns-->
+<div class="w3-container">
+<a href="/createRest" style="text-decoration: none">
+    <button class="w3-btn w3-section w3-teal w3-ripple">Create New Restaurants</button>
+</a>
+<br>
+<a href="/logout" style="text-decoration: none">
+    <button class="w3-btn w3-section w3-teal w3-ripple">Logout</button>
+</a>
+
+</div>
+
+</BODY></HTML>

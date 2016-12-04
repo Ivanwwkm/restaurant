@@ -1,0 +1,112 @@
+<HTML>
+<BODY>
+<head>
+  <title><%= c.name %></title>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<!--google map-->
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>	
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkfp0OSPZ0fl8ZF3a0tea-mp36-mp_8b8&callback=loadMap">
+</script>
+<script type="text/javascript">
+        var loadMap = function() 
+        {
+		var myLatLng = {lat: <%= c.address.coord[0]%>, lng: <%= c.address.coord[1]%>};
+                var map = new google.maps.Map(document.getElementById("map"),{
+			      zoom: 18,
+			      center: myLatLng
+		}); 
+		var marker = new google.maps.Marker({
+					position: myLatLng,
+					map: map,
+		});
+        };
+        window.onload= loadMap;
+</script>
+
+
+<style>
+  /* Always set the map height explicitly to define the size of the div
+   * element that contains the map. */
+  #map {
+    height: 100%;
+  }
+  /* Optional: Makes the sample page fill the window. */
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+</style>
+</head>
+
+<!-- basic information-->
+<div class="w3-container w3-teal"><h1><%= c.name%></h1></div>
+
+<div class="w3-container">
+<p>Restaurant ID: <%= c.restaurant_id %></p>
+
+<p>Address: <ul>
+<li>	 street : <%= c.address.street %></li>
+<li>	 zipcode : <%= c.address.zipcode%></li>
+<li>	 building : <%= c.address.building %></li>
+</ul>
+</p>
+<p>Borough: <%= c.borough %></p>
+<p>Cuisine: <%= c.cuisine %></p>
+
+
+<!--photo-->
+<% if (c.photo.data != "") { %>
+<p>Photo : <br>
+<img src="data:<%=c.photo.mimetype%>;base64,<%=c.photo.data%>" max-height="400px">
+</p>
+<% } %>
+<!--Map-->
+<p><label class="w3-label w3-validate">GPS: </label>
+<%if(c.address.coord[0] != ""){  %>
+[ <%=c.address.coord %> ]
+<aside>
+      	<div id="map" style="width:500px;height:500px;">
+</aside>
+
+<%} else{ %>
+<%="NULL"%>
+<%} %>
+
+</p>
+<!--Rate-->
+<p><label class="w3-label w3-validate">Rating:  
+<%if(c.grades != ""){  %>
+<ol><% c.grades.forEach(function(rate) { %>
+	<li><%=rate.score%> (<%=rate.userId%>)</li>
+<% }); %>
+</ol>
+<%} else{ %>
+	No one rate
+<%} %>
+
+</label></p>
+<!--Created By-->
+<p><label class="w3-label w3-validate">Created by:  <%= c.createdby %></label></p>
+</div>
+
+<!--Btns-->
+<div class="w3-container">
+<a href="/rate?_id=<%=c._id %>&ampname=<%=c.name%>" style="text-decoration: none">
+    <button class="w3-btn w3-section w3-teal w3-ripple">Rate</button>
+</a>
+<a href="/change?_id=<%=c._id%>" style="text-decoration: none">
+  <button class="w3-btn w3-section w3-teal w3-ripple">Edit</button>
+</a>
+<a href="/remove?_id=<%=c._id%>" style="text-decoration: none">
+  <button class="w3-btn w3-section w3-teal w3-ripple">Delete</button>
+</a>
+<a href="/readAll" style="text-decoration: none">
+<button class="w3-btn w3-section w3-teal w3-ripple">Go Back</button>
+</a>
+</div>
+
+</BODY>
+</HTML>

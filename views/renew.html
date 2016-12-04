@@ -1,0 +1,40 @@
+<HTML>
+<head>
+  <title>New A Restaurant</H1></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+</head>
+
+<BODY>
+<header class="w3-container w3-teal"><h1>New A Restaurant</h1></header>
+
+<div class="w3-container">
+
+<form action='/update' method='post' encType='multipart/form-data'>
+	<p>Name:
+	<input type='text' name='restName' required=""></p>
+	<p>Address:<br>
+	Building: <input type='text' name='building'><br>
+	Street: <input type='text' name='street'><br>
+	Zipcode: <input type='number' name='zipcode'><br>
+	</p>
+	<p>
+	Coordinates:<br>
+	Longitude: <input type='text' name='lon' ><br>
+	Latitude: <input type='text' name='lat' ><br>
+	</p>
+	<p>
+	Other Information:<br>
+	Borough: <input type='text' name='borough'><br>
+	Cuisine: <input type='text' name='cuisine'><br>
+	Restaurant Id: <input type='number' name='restId' ><br>
+	</p>
+	
+ 	Photo: <input type='file' name='sampleFile'><br><br>
+
+	<input test="text" value=<%=c%> >
+  <input type='submit' value='Create' />
+</form>
+</div>
+</BODY>
+</HTML>

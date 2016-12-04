@@ -1,0 +1,36 @@
+<HTML>
+<head>
+  <title>New A Restaurant</H1></title>
+</head>
+
+<BODY>
+<h1>New A Restaurant</h1>
+<form 
+action='/create' 
+method='post' 
+encType='multipart/form-data'>
+
+Name of restaurant:
+	<input type='text' name='restName' required=""><br>
+	<br>
+	Address:
+	Building: <input type='text' name='building'><br>
+	Street: <input type='text' name='street'><br>
+	Zipcode: <input type='number' name='zipcode'><br>
+	<br>
+	Coordinates:
+	Longitude: <input type='text' name='lon' ><br>
+	Latitude: <input type='text' name='lat' ><br>
+	<br>
+	Other Information:<br>
+	Borough: <input type='text' name='borough'><br>
+	Cuisine: <input type='text' name='cuisine'><br>
+	Restaurant Id: <input type='number' name='restId' ><br>
+	<br>
+	
+ 	Photo: <input type='file' name='sampleFile'><br><br>
+
+  <input type='submit' value='Create' />
+</form>
+</BODY>
+</HTML>

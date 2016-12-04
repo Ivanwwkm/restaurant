@@ -1,0 +1,22 @@
+{
+    "name": "381_project",
+    "description": "Restaurant",
+    "author": "IvanWong&Ying>",
+    "version": "0.0.1",
+    "dependencies": {
+        "mongoose": "*",
+        "express": "*",
+		"mongodb" : "*",
+		"ejs": "*",
+		"cookie-session" : "*",
+		"express-fileupload" : "latest",
+		"assert" : "*",
+        "express-session": "*",
+        "body-parser": "*",
+       	"multer": "*"
+
+    },
+    "engine": "node >= 0.10.0",
+    "scripts": {"start": "node server"}
+}
+
