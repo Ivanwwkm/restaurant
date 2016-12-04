@@ -426,26 +426,45 @@ app.post('/api/create', function(req, res) { // "/create"
 });
 
 function createRest(db ,bodyObj, bfile, userId ,callback) {
-	var insertDoc = {
-		address : {
-		 street : bodyObj.street,
-		 zipcode : bodyObj.zipcode,
-		 building : bodyObj.building,
-		 coord : [bodyObj.lon, bodyObj.lat]
-		 },
-		 borough : bodyObj.borough,
-		 cuisine : bodyObj.cuisine,
-		 grades : [
-			{userId : null, score : null }
-		 ],
-		 name : bodyObj.restName,
-		 restaurant_id : bodyObj.restId,
-		createdby: userId,
-		photo:{
-		    data : new Buffer(bfile.data).toString('base64'),
- 		   mimetype : bfile.mimetype,
+	if(bfile != null || bfile != undefined){
+		var insertDoc = {
+			address : {
+			street : bodyObj.street,
+			zipcode : bodyObj.zipcode,
+			building : bodyObj.building,
+			coord : [bodyObj.lon, bodyObj.lat]
+			},
+			borough : bodyObj.borough,
+			cuisine : bodyObj.cuisine,
+			grades : [
+				{userId : null, score : null }
+			],
+			name : bodyObj.restName,
+			restaurant_id : bodyObj.restId,
+			createdby: userId,
+			photo:{
+				data : new Buffer(bfile.data).toString('base64'),
+				mimetype : bfile.mimetype,
+			}
+		};
+	}else{
+			var insertDoc = {
+				address : {
+				street : bodyObj.street,
+				zipcode : bodyObj.zipcode,
+				building : bodyObj.building,
+				coord : [bodyObj.lon, bodyObj.lat]
+				},
+				borough : bodyObj.borough,
+				cuisine : bodyObj.cuisine,
+				grades : [
+					{userId : null, score : null }
+				],	
+				name : bodyObj.restName,
+				restaurant_id : bodyObj.restId,
+				createdby: userId
+					};
 		}
-	};	
   db.collection("restaurants").insertOne( insertDoc, function(err,result) {
     assert.equal(err,null);
     if (err) {
