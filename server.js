@@ -106,7 +106,7 @@ app.post('/rate', function(req,res){
 		MongoClient.connect(mongourl, function(err, db) {
 			assert.equal(err,null);
 			console.log('Connected to MongoDB @ rate');
-			db.collection('restaurants').findOne({_id : id, grades:{'userId' : userId}},function(err,doc){
+			db.collection('restaurants').findOne({'_id' : id, 'grades.userId' : userId},function(err,doc){
 				assert.equal(err,null);	
 				console.log(doc)
 				if(doc == null){
@@ -119,7 +119,6 @@ app.post('/rate', function(req,res){
 				}
 				else{
 					res.end('You rated this restaurant before');
-					res.redirect('/rateError.html');
 				}
 			});
 		});
