@@ -109,8 +109,8 @@ app.post('/rate', function(req,res){
 	console.log(score);
 	console.log(userId);
 	console.log(id);
-
-		MongoClient.connect(mongourl, function(err, db) {
+	if(score>0 && score<11){
+			MongoClient.connect(mongourl, function(err, db) {
 			assert.equal(err,null);
 			console.log('Connected to MongoDB @ rate');
 			db.collection('restaurants').findOne({'_id' : id, 'grades.userId' : userId},function(err,doc){
@@ -129,6 +129,9 @@ app.post('/rate', function(req,res){
 				}
 			});
 		});
+	}else{
+		res.end("The score of rating must within 1-10");
+	}
 });
 
 /*search*/
