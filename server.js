@@ -355,9 +355,11 @@ app.post('api/create', function(req, res) { // "/create"
         db.close();
         if (result.insertedId != null) {
 			res.json('status: ok, _id: ' + JSON.stringify(result.insertedId));
+			res.end();
 
         } else {
 			res.json('status: failed');
+			res.end();
         }
       });
     });
