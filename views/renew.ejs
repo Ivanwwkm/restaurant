@@ -1,0 +1,42 @@
+<HTML>
+<BODY>
+<head>
+  <title>Edit</H1></title>
+	<meta name='viewport' content='initial-scale=1.0, user-scalable=no'>
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<link rel='stylesheet' href='http://www.w3schools.com/lib/w3.css'>
+</head>
+
+
+<header class='w3-container w3-teal'><h1>Edit A Restaurant</h1></header>
+
+<div class='w3-container'>
+<form action='/update' method='post' encType='multipart/form-data'>
+	<p>Name: 
+	<input type='text' name='restName' required value='<%=c.name%>'></p>
+	<p>Address:<br>
+	Building: <input type='text' name='building' value='<%=c.address.building%>'><br>
+	Street: <input type='text' name='street' value='<%=c.address.street%>' ><br>
+	Zipcode: <input type='number' name='zipcode' value='<%=c.address.zipcode%>' ><br>
+	</p>
+	<p>
+	Coordinates:<br>
+	Longitude: <input type='text' name='lon' value='<%=c.address.coord[0]%>' ><br>
+	Latitude: <input type='text' name='lat' value='<%=c.address.coord[1]%>' ><br>
+	</p>
+	<p>
+	Other Information:<br>
+	Borough: <input type='text' name='borough' value='<%=c.borough%>' ><br>
+	Cuisine: <input type='text' name='cuisine' value='<%=c.cuisine%>' ><br>
+	Restaurant Id: <input type='number' name='restId' value='<%=c.restaurant_id%>' ><br>
+	</p>
+	
+ 	Photo: <input type='file' name='sampleFile' value=""><br><br>
+
+	<input name='key' type='hidden' value=<%=c._id%> >
+	<input name='userId' type='hidden' value=<%=c.createdby%> >
+  <input type='submit' value='Edit' />
+</form>
+</div>
+</BODY>
+</HTML>
