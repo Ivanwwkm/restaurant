@@ -62,12 +62,10 @@ app.post("/registerSubmit", function(req,res) {
 				createReg(db,u,function(success) {
 					db.close();
 					console.log('Disconnected from MongoDB\n');	
-					res.redirect('/login');
-					res.end('Success: ' + success.insertedId);
+					res.end('Success: ' + u.userId);
 				});
 			} else {
 				console.log("The userId has been registered before");
-				res.redirect('/register');
 				res.end('The userId has been registered before');
 			}
 		});
@@ -92,7 +90,6 @@ app.post('/processlogin',function(req,res){
 				res.end("successful");
 			}
 			else{
-				res.redirect('/login');
 				res.status(500).end("Login Fail");
 			}
 		});		
@@ -120,7 +117,6 @@ app.post('/rate', function(req,res){
 				db.collection("restaurants").updateOne( {"_id" : id},{$push : {grades :{'userId' : userId, 'score' : score}}},
 					function(err,result) {
 					assert.equal(err,null);
-//					res.redirect('/????.html');
 					res.end('You have rated '+score+' to the restaurant');	
 				});
 				}
@@ -349,7 +345,7 @@ console.log(req.session.userId);
 
 
 /*api/create*/
-app.post('/api/create', function(req, res) { // "/create"
+app.post('api/create', function(req, res) { // "/create"
 	console.log('/upload');
 	var userId = null;
     //check name
