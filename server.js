@@ -408,16 +408,18 @@ app.post('/api/create', function(req, res) { // "/create"
     MongoClient.connect(mongourl,function(err,db) {
       console.log('Connected to mlab.com');
       assert.equal(null,err);
-	  console.log(req.body);
+//	  console.log(req.body);
       createRest(db,req.body,req.files.sampleFile, userId, function(result) { //call create()
         db.close();
         if (result.insertedId != null) {
 			var status = "OK";
+			console.log('status: '+status+', _id: ' + JSON.stringify(result.insertedId));
 			res.json('status: '+status+', _id: ' + JSON.stringify(result.insertedId));
 			res.end();
 
         } else {
 			var status = "failed";
+			console.log('status: '+status );
 			res.json('status: '+status );
 			res.end();
         }
@@ -465,6 +467,8 @@ function createRest(db ,bodyObj, bfile, userId ,callback) {
 				createdby: userId
 					};
 		}
+		console.log(bodyObj);
+		console.log(insertDoc);
   db.collection("restaurants").insertOne( insertDoc, function(err,result) {
     assert.equal(err,null);
     if (err) {
