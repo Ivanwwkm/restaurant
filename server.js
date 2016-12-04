@@ -374,22 +374,6 @@ app.post('api/create', function(req, res) { // "/create"
     });
 });
 
-/** url to change data**/
-app.get('/change', function(req, res){
-	//check login
-	console.log('@change');
-	if(req.session.userId == null || req.session.userId == undefined){
-		console.log('login plz');
-		res.redirect('/login');
-	}else{
-		console.log(req.query._id);
-		res.sendFile(__dirname + "/views/renew.html");
-	}
-});
-
-/** update data***/
-/*app.post('/update', function(req, res) { // "/api/create"
-});*/
 
 function createRest(db ,bodyObj, bfile, userId ,callback) {
 	var insertDoc = {
@@ -567,6 +551,7 @@ app.get('/remove', function(req, res){
 			}
 		
 			db.close();
+		});
 		});
 	});
 
