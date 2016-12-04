@@ -22,6 +22,10 @@ app.use(session({
 
 app.set('view engine', 'ejs');
 
+app.get('/',function(req,res){
+	res.redirect('/login');
+});
+
 app.get("/register", function(req,res) {
 	 res.sendFile(__dirname + '/public/register.html');
 });
