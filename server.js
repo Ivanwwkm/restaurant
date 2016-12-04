@@ -374,7 +374,6 @@ app.post('api/create', function(req, res) { // "/create"
     });
 });
 
-
 function createRest(db ,bodyObj, bfile, userId ,callback) {
 	var insertDoc = {
 		address : {
@@ -551,7 +550,6 @@ app.get('/remove', function(req, res){
 			}
 		
 			db.close();
-		});
 		});
 	});
 
