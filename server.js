@@ -348,11 +348,6 @@ console.log(req.session.userId);
 app.post('api/create', function(req, res) { // "/create"
 	console.log('/upload');
 	var userId = null;
-    //check name
-    if (!req.body.restName) {
-        res.send('No \"Name\". Please Enter Restaurant Name!');
-        return;
-    }
 
     MongoClient.connect(mongourl,function(err,db) {
       console.log('Connected to mlab.com');
