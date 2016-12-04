@@ -134,18 +134,18 @@ app.get("/read", function(req,res) {
 		
 		var criteria = {};
 	
-		if(req.params.name != undefined){
+		if(req.query.name != undefined){
 			criteria['name'] = req.query.name;		
 		}
 	
-		else if(req.params.borough != undefined){
+		else if(req.query.borough != undefined){
 			criteria['borough'] = req.query.borough;
 		}
-		else if(req.params.cuisine != undefined){
-			criteria['cuisine'] = req.params.cuisine;
+		else if(req.query.cuisine != undefined){
+			criteria['cuisine'] = req.query.cuisine;
 		}
 	
-//	console.log(JSON.stringify(criteria));
+	console.log(JSON.stringify(criteria));
 	
 		MongoClient.connect(mongourl, function(err, db) {
 	    assert.equal(err,null);
@@ -395,7 +395,7 @@ function createRest(db ,bodyObj, bfile, userId ,callback) {
 		 borough : bodyObj.borough,
 		 cuisine : bodyObj.cuisine,
 		 grades : [
-			{userId : '', score : '' }
+			{userId : null, score : null }
 		 ],
 		 name : bodyObj.restName,
 		 restaurant_id : bodyObj.restId,
