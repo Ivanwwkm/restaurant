@@ -346,7 +346,7 @@ console.log(req.session.userId);
 
 
 /*api/create*/
-app.post('api/create', function(req, res) { // "/create"
+app.post('/api/create', function(req, res) { // "/create"
 	console.log('/upload');
     //check name
     if (!req.body.restName) {
