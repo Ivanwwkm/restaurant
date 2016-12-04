@@ -49,7 +49,9 @@ app.get("/rate",function(req,res){
 
 /*register*/
 app.post("/registerSubmit", function(req,res) {
-//	console.log(JSON.stringify(req.body));
+	var u = {userId : req.body.userId,
+			 userPW : req.body.password};
+	console.log(u);
 	req.session.userId == null;
 	MongoClient.connect(mongourl, function(err, db) {
 		assert.equal(err,null);
@@ -57,16 +59,16 @@ app.post("/registerSubmit", function(req,res) {
 //	console.log(req.body);
 		checkDup(db,req.body.userId,function(result){		
 			if (result == true) {
-				createReg(db,req.body,function(success) {
-					res.end('Success: ' + success.insertedId);
+				createReg(db,u,function(success) {
 					db.close();
 					console.log('Disconnected from MongoDB\n');	
 					res.redirect('/login');
+					res.end('Success: ' + success.insertedId);
 				});
 			} else {
 				console.log("The userId has been registered before");
-				res.end('The userId has been registered before');
 				res.redirect('/register');
+				res.end('The userId has been registered before');
 			}
 		});
 	});
@@ -74,10 +76,10 @@ app.post("/registerSubmit", function(req,res) {
 
 /*login*/
 app.post('/processlogin',function(req,res){
+	req.session.userId == null;
 	var userId = req.body.userId;
 	var userPW = req.body.password;
 	console.log(userId+","+userPW);
-	req.session.userId == null;
 	MongoClient.connect(mongourl, function(err, db) {
 		assert.equal(err,null);
 		console.log('Connected to MongoDB @ processlogin');
@@ -87,10 +89,11 @@ app.post('/processlogin',function(req,res){
 			if(sucess == true){
 				req.session.userId = userId;
 				res.redirect('/readAll');
+				res.end("successful");
 			}
 			else{
-				res.status(500).end("Login Fail");
 				res.redirect('/login');
+				res.status(500).end("Login Fail");
 			}
 		});		
 	});
@@ -380,7 +383,7 @@ app.get('/change', function(req, res){
 		res.redirect('/login');
 	}else{
 		console.log(req.query._id);
-		res.sendFile(_dirname + "/views/renew.html");
+		res.sendFile(__dirname + "/views/renew.html");
 	}
 });
 
