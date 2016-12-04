@@ -170,23 +170,79 @@ app.get("/read", function(req,res) {
 
 
 /*search/api*/
-app.get("/api/read/:f1/:c1/:f2/:c2/:f3/:c3", function(req,res) {
-	if(req.session.userId == null || req.session.userId == undefined){
-		console.log('login plz');
-		res.redirect('/login');
-	}else{
+
+app.get("/api/read/:f1/:c1", function(req,res) {
 		
 		var criteria = {};
 	
 		if(req.params.f1 != undefined){
-			criteria['f1'] = req.params.c1;		
+			criteria[req.params.f1] = req.params.c1;		
+		}
+	
+	
+//	console.log(JSON.stringify(criteria));
+	
+		MongoClient.connect(mongourl, function(err, db) {
+	    assert.equal(err,null);
+	    console.log('Connected to MongoDB: readALL \n');	
+	    db.collection('restaurants').find(criteria).sort({item:1}).toArray(function(err,results) {
+		if (err) {
+	          console.log(err);
+        	} else {
+        	db.close();
+	  	res.json(JSON.stringify(results));
+		res.end();
+   		}
+  	    });
+	   	});
+	
+});
+
+
+app.get("/api/read/:f1/:c1/:f2/:c2", function(req,res) {
+		
+		var criteria = {};
+	
+		if(req.params.f1 != undefined){
+			criteria[req.params.f1] = req.params.c1;		
 		}
 	
 		else if(req.params.f2 != undefined){
-			criteria['f2'] = req.params.c2;
+			criteria[req.params.f2] = req.params.c2;
+		}
+		
+//	console.log(JSON.stringify(criteria));
+	
+		MongoClient.connect(mongourl, function(err, db) {
+	    assert.equal(err,null);
+	    console.log('Connected to MongoDB: readALL \n');	
+	    db.collection('restaurants').find(criteria).sort({item:1}).toArray(function(err,results) {
+		if (err) {
+	          console.log(err);
+        	} else {
+        	db.close();
+	  	res.json(JSON.stringify(results));
+		res.end();
+   		}
+  	    });
+	   	});
+	
+});
+
+
+app.get("/api/read/:f1/:c1/:f2/:c2/:f3/:c3", function(req,res) {
+		
+		var criteria = {};
+	
+		if(req.params.f1 != undefined){
+			criteria[req.params.f1] = req.params.c1;		
+		}
+	
+		else if(req.params.f2 != undefined){
+			criteria[req.params.f2] = req.params.c2;
 		}
 		else if(req.params.f3 != undefined){
-			criteria['f3'] = req.params.c3;
+			criteria[req.params.f3] = req.params.c3;
 		}
 	
 //	console.log(JSON.stringify(criteria));
@@ -204,7 +260,7 @@ app.get("/api/read/:f1/:c1/:f2/:c2/:f3/:c3", function(req,res) {
    		}
   	    });
 	   	});
-	}
+	
 });
 
 
@@ -345,13 +401,14 @@ console.log(req.session.userId);
 
 
 /*api/create*/
-app.post('api/create', function(req, res) { // "/create"
+app.post('/api/create', function(req, res) { // "/create"
 	console.log('/upload');
 	var userId = null;
 
     MongoClient.connect(mongourl,function(err,db) {
       console.log('Connected to mlab.com');
       assert.equal(null,err);
+	  console.log(req.body);
       createRest(db,req.body,req.files.sampleFile, userId, function(result) { //call create()
         db.close();
         if (result.insertedId != null) {
