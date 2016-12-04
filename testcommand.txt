@@ -1,0 +1,1 @@
+curl -X POST -F "restName=API Test Restaurant" -F "street=ABC street" -F "zipcode=000000" -F "building=ABC Building" -F "lon=24" -F "lat=114" -F "borough=API" -F "cuisine=API" -F "photo=@cafe.jpg" "http://localhost:8099/api/create"
