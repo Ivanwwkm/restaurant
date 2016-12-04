@@ -81,7 +81,7 @@
 
 <%if(c.grades.score != "" && c.grades.length != 1){  %>
 	<ol><% c.grades.forEach(function(rate) { %>
-		<%if (rate.score != ""){%>
+		<%if (c.grades.score != ""){%>
 		<li><%=rate.score%> (<%=rate.userId%>)</li>
 	<% }}); %>
 	</ol>
