@@ -22,10 +22,6 @@ app.use(session({
 
 app.set('view engine', 'ejs');
 
-app.get('/',function(req,res){
-	res.redirect('/login');
-});
-
 app.get("/register", function(req,res) {
 	 res.sendFile(__dirname + '/public/register.html');
 });
@@ -97,22 +93,25 @@ app.post('/processlogin',function(req,res){
 });
 
 app.post('/rate', function(req,res){
-	if(req.session.userId == null){
+	if(req.session.userId == null || req.session.userId == undefined){
 		res.end("Please login before rating");	
 	}
 	var score = req.body.score;
 	var userId = req.session.userId;
 	var id = ObjectId(req.query._id);
+
+
+		MongoClient.connect(mongourl, function(err, db) {
+
 	console.log(score);
 	console.log(userId);
 	console.log(id);
 
-		MongoClient.connect(mongourl, function(err, db) {
 			assert.equal(err,null);
 			console.log('Connected to MongoDB @ rate');
-			db.collection('restaurants').findOne({'_id' : id, 'grades.userId' : userId},function(err,doc){
+			db.collection('restaurants').findOne({'_id' : id, grades:{'userId' : userId}},function(err,doc){
 				assert.equal(err,null);	
-				console.log(doc)
+				console.log(doc);
 				if(doc == null){
 				db.collection("restaurants").updateOne( {"_id" : id},{$push : {grades :{'userId' : userId, 'score' : score}}},
 					function(err,result) {
@@ -123,6 +122,7 @@ app.post('/rate', function(req,res){
 				}
 				else{
 					res.end('You rated this restaurant before');
+					res.redirect('/rateError.html');
 				}
 			});
 		});
@@ -137,18 +137,18 @@ app.get("/read", function(req,res) {
 		
 		var criteria = {};
 	
-		if(req.query.name != undefined){
+		if(req.params.name != undefined){
 			criteria['name'] = req.query.name;		
 		}
 	
-		else if(req.query.borough != undefined){
+		else if(req.params.borough != undefined){
 			criteria['borough'] = req.query.borough;
 		}
-		else if(req.query.cuisine != undefined){
-			criteria['cuisine'] = req.query.cuisine;
+		else if(req.params.cuisine != undefined){
+			criteria['cuisine'] = req.params.cuisine;
 		}
 	
-	console.log(JSON.stringify(criteria));
+//	console.log(JSON.stringify(criteria));
 	
 		MongoClient.connect(mongourl, function(err, db) {
 	    assert.equal(err,null);
@@ -330,7 +330,8 @@ console.log(req.session.userId);
 			console.log('Inserted: ' + result.insertedId);
 			res.write('Inserted: ' + result.insertedId); 
 			res.write('<br>status: ok<br>'); 
-			res.write('result:' + result);	 
+			res.write('result:' + result);
+						console.log(result);	 
 			res.write('<br><br><a href="/readAll">back to real ALL</a>');
 			res.end(); //
         } else {
@@ -358,7 +359,7 @@ app.post('api/create', function(req, res) { // "/create"
         db.close();
         if (result.insertedId != null) {
 			var status = "OK";
-			
+			console.log(result);
 			res.json('status: '+status+', _id: ' + JSON.stringify(result.insertedId));
 			res.end();
 
@@ -371,22 +372,6 @@ app.post('api/create', function(req, res) { // "/create"
     });
 });
 
-/** url to change data**/
-app.get('/change', function(req, res){
-	//check login
-	console.log('@change');
-	if(req.session.userId == null || req.session.userId == undefined){
-		console.log('login plz');
-		res.redirect('/login');
-	}else{
-		console.log(req.query._id);
-		res.sendFile(_dirname + "/views/renew.html");
-	}
-});
-
-/** update data***/
-/*app.post('/update', function(req, res) { // "/api/create"
-});*/
 
 function createRest(db ,bodyObj, bfile, userId ,callback) {
 	var insertDoc = {
@@ -399,7 +384,7 @@ function createRest(db ,bodyObj, bfile, userId ,callback) {
 		 borough : bodyObj.borough,
 		 cuisine : bodyObj.cuisine,
 		 grades : [
-			{userId : null, score : null }
+			{userId : '', score : '' }
 		 ],
 		 name : bodyObj.restName,
 		 restaurant_id : bodyObj.restId,
@@ -421,10 +406,27 @@ function createRest(db ,bodyObj, bfile, userId ,callback) {
   });
 }
 
-//change
-/*function updateRest() {}
-*/
+/*********************** update information ************************************/
+/** url to change data**/
+app.get('/change', function(req, res){
+	console.log('@/change');
+	//check login
+	if(req.session.userId == null || req.session.userId == undefined){
+		console.log('login plz');
+		res.redirect('/login');
+	}
+	else{
+	
+	req.session.docId = req.query._id;
+ 	MongoClient.connect(mongourl,function(err,db) {
+	      console.log('Connected to mlab.com');
+	      assert.equal(null,err);
 
+		//check owner 
+		isowner(db, req.query._id, req.session.userId, function(sucess){
+			console.log(sucess);
+
+<<<<<<< HEAD
 
 /*********************** update information ************************************/
 /** url to change data**/
@@ -446,6 +448,8 @@ app.get('/change', function(req, res){
 		isowner(db, req.query._id, req.session.userId, function(sucess){
 			console.log(sucess);
 
+=======
+>>>>>>> origin/master
 			if(sucess == true){
 				//get document
 				db.collection('restaurants').findOne({'_id': ObjectId(req.query._id)}, function(err,doc) {
@@ -522,6 +526,11 @@ MongoClient.connect(mongourl,function(err,db) {
 
 res.redirect('/readAll');
 });
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> origin/master
 /************* delete ********************/
 /** url: remove data**/
 app.get('/remove', function(req, res){
