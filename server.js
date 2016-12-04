@@ -464,8 +464,12 @@ function createRest(db ,bodyObj, bfile, userId ,callback) {
 				],	
 				name : bodyObj.restName,
 				restaurant_id : bodyObj.restId,
-				createdby: userId
-					};
+				createdby: userId,
+				photo:{
+					data : "",
+					mimetype : "application/octet-stream",
+				}
+			};
 		}
 		console.log(bodyObj);
 		console.log(insertDoc);
