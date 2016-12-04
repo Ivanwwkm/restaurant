@@ -352,7 +352,7 @@ app.post('api/create', function(req, res) { // "/create"
     MongoClient.connect(mongourl,function(err,db) {
       console.log('Connected to mlab.com');
       assert.equal(null,err);
-      createRest(db, JSON.parse(req.body),req.files.sampleFile, userId, function(result) { //call create()
+      createRest(db,req.body,req.files.sampleFile, userId, function(result) { //call create()
         db.close();
         if (result.insertedId != null) {
 			var status = "OK";
