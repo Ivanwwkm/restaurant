@@ -354,7 +354,9 @@ app.post('api/create', function(req, res) { // "/create"
       createRest(db, JSON.parse(req.body),req.files.sampleFile, req.session.userId, function(result) { //call create()
         db.close();
         if (result.insertedId != null) {
-			res.json('status: ok, _id: ' + JSON.stringify(result.insertedId));
+			var status = "OK";
+			
+			res.json('status: '+status+', _id: ' + JSON.stringify(result.insertedId));
 			res.end();
 
         } else {
