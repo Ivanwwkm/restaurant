@@ -351,6 +351,7 @@ console.log(req.session.userId);
 /*api/create*/
 app.post('/api/create', function(req, res) { // "/create"
 	console.log('/upload');
+	var userId = null;
     //check name
     if (!req.body.restName) {
         res.send('No \"Name\". Please Enter Restaurant Name!');
@@ -360,11 +361,10 @@ app.post('/api/create', function(req, res) { // "/create"
     MongoClient.connect(mongourl,function(err,db) {
       console.log('Connected to mlab.com');
       assert.equal(null,err);
-      createRest(db, JSON.parse(req.body),req.files.sampleFile, req.session.userId, function(result) { //call create()
+      createRest(db, JSON.parse(req.body),req.files.sampleFile, userId, function(result) { //call create()
         db.close();
         if (result.insertedId != null) {
 			var status = "OK";
-			
 			res.json('status: '+status+', _id: ' + JSON.stringify(result.insertedId));
 			res.end();
 
