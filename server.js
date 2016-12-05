@@ -36,7 +36,7 @@ app.get("/login", function(req,res) {
 
 app.get("/logout", function(req,res){
 	req.session.userId = null;
-	res.sendFile(__dirname + '/public/logout.html');
+	//res.sendFile(__dirname + '/public/logout.html');
 	console.log(req.session.userId);
 	res.redirect('/login');
 });
@@ -409,7 +409,7 @@ app.post('/api/create', function(req, res) { // "/create"
       console.log('Connected to mlab.com');
       assert.equal(null,err);
 //	  console.log(req.body);
-      createRest(db,req.body,req.files.sampleFile, userId, function(result) { //call create()
+      createRestApi(db,req.body,req.files, userId, function(result) { //call create()
         db.close();
         if (result.insertedId != null) {
 			var status = "OK";
@@ -428,6 +428,64 @@ app.post('/api/create', function(req, res) { // "/create"
 });
 
 function createRest(db ,bodyObj, bfile, userId ,callback) {
+	if(bfile != null || bfile != undefined){
+		var insertDoc = {
+			address : {
+			street : bodyObj.street,
+			zipcode : bodyObj.zipcode,
+			building : bodyObj.building,
+			coord : [bodyObj.lon, bodyObj.lat]
+			},
+			borough : bodyObj.borough,
+			cuisine : bodyObj.cuisine,
+			grades : [
+				{userId : null, score : null }
+			],
+			name : bodyObj.restName,
+			restaurant_id : bodyObj.restId,
+			createdby: userId,
+			photo:{
+				data : new Buffer(bfile.data).toString('base64'),
+				mimetype : bfile.mimetype,
+			}
+		};
+	}else{
+			var insertDoc = {
+				address : {
+				street : bodyObj.street,
+				zipcode : bodyObj.zipcode,
+				building : bodyObj.building,
+				coord : [bodyObj.lon, bodyObj.lat]
+				},
+				borough : bodyObj.borough,
+				cuisine : bodyObj.cuisine,
+				grades : [
+					{userId : null, score : null }
+				],	
+				name : bodyObj.restName,
+				restaurant_id : bodyObj.restId,
+				createdby: userId,
+				photo:{
+					data : "",
+					mimetype : "application/octet-stream",
+				}
+			};
+		}
+		console.log(bodyObj);
+		console.log(insertDoc);
+  db.collection("restaurants").insertOne( insertDoc, function(err,result) {
+    assert.equal(err,null);
+    if (err) {
+      console.log('insertOne Error: ' + JSON.stringify(err));
+      result = err;
+    } else {
+      console.log("Inserted _id = " + result.insertedId);
+    }
+    callback(result);
+  });
+}
+
+function createRestApi(db ,bodyObj, bfile, userId ,callback) {
 	if(bfile != null || bfile != undefined){
 		var insertDoc = {
 			address : {
