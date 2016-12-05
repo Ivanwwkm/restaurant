@@ -79,7 +79,7 @@
 </p>
 <!--Rate-->
 <p><label class="w3-label w3-validate">Rating:  
-<%if(c.grades != null){  %>
+<%if(c.grades.score != null){  %>
 
 <ol><% c.grades.forEach(function(rate) { %>
 <%if( rate.userID != ''){  %>
