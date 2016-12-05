@@ -58,11 +58,12 @@
 
 
 <!--photo-->
-<% if (c.photo.data != "") { %>
+<% if (c.photo.data != "" ) { %>
+<% if( c.photo.mimetype != 'application/pdf'){%>
 <p>Photo : <br>
 <img src="data:<%=c.photo.mimetype%>;base64,<%=c.photo.data%>" max-height="400px">
 </p>
-<% } %>
+<% }} %>
 <!--Map-->
 <p><label class="w3-label w3-validate">GPS: </label>
 <%if(c.address.coord[0] != ""){  %>
@@ -79,9 +80,11 @@
 <!--Rate-->
 <p><label class="w3-label w3-validate">Rating:  
 <%if(c.grades != null){  %>
+
 <ol><% c.grades.forEach(function(rate) { %>
+<%if( rate.userID != ''){  %>
 	<li><%=rate.score%> (<%=rate.userId%>)</li>
-<% }); %>
+<% }}); %>
 </ol>
 <%} else{ %>
 	No one rate
