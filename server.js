@@ -403,7 +403,7 @@ console.log(req.session.userId);
 /*api/create*/
 app.post('/api/create', function(req, res) { // "/create"
 	console.log('/upload');
-	var userId = null;
+	var userId = req.body.createdby;
 
     MongoClient.connect(mongourl,function(err,db) {
       console.log('Connected to mlab.com');
